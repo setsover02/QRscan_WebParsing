@@ -4,7 +4,9 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -12,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -20,6 +24,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.zxing.Result;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -43,11 +48,13 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     //comm
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         this.savedInstanceState = savedInstanceState;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Button cameraBtn = (Button)findViewById(R.id.cameraBtn);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         // Button storageBtn = (Button)findViewById(R.id.storageBtn);
         // Button micBtn = (Button)findViewById(R.id.micBtn);
@@ -62,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(1);
         web = new WebView(this);
+
         WebSettings webSet = web.getSettings();
         webSet.setUseWideViewPort(true);
         webSet.setJavaScriptEnabled(true);
@@ -200,6 +208,8 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         // If you would like to resume scanning, call this method below:
         // mScannerView.resumeCameraPreview(this);
     }
+
+
 }
 
 
