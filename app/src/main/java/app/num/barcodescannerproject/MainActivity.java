@@ -15,20 +15,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.zxing.Result;
-import me.dm7.barcodescanner.zxing.ZXingScannerView;
-
-//webview
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
-//webbiew
+
+import com.google.zxing.Result;
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static app.num.barcodescannerproject.R.id.resultText;
 
 public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+
 
     private ZXingScannerView mScannerView;
 
@@ -38,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     private static final int REQUEST_EXTERNAL_STORAGE = 2;
     private TextView resultText;
     private Bundle savedInstanceState;
+
+    WebView web;
 
     //comm
     @Override
@@ -56,6 +57,32 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         cameraBtn.setOnClickListener(buttonClickListener);
         // storageBtn.setOnClickListener(buttonClickListener);
         // micBtn.setOnClickListener(buttonClickListener);
+
+        // webview
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(1);
+        web = new WebView(this);
+        WebSettings webSet = web.getSettings();
+        webSet.setUseWideViewPort(true);
+        webSet.setJavaScriptEnabled(true);
+        webSet.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSet.setBuiltInZoomControls(false);
+        webSet.setAllowFileAccessFromFileURLs(true);
+        webSet.setAllowUniversalAccessFromFileURLs(true);
+        webSet.setSupportMultipleWindows(true);
+        webSet.setSaveFormData(false);
+        webSet.setSavePassword(false);
+        webSet.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        web.setWebChromeClient(new WebChromeClient());
+        web.setWebViewClient(new WebViewClient());
+        web.loadUrl("http://45.76.205.98/");
+        layout.addView(web);
+        setContentView(layout);
+    }
+
+    public void onBackPressed() {
+        if(web.canGoBack()) web.goBack();
+        else finish();
     }
 
     private View.OnClickListener buttonClickListener = new View.OnClickListener() {
@@ -173,36 +200,7 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         // If you would like to resume scanning, call this method below:
         // mScannerView.resumeCameraPreview(this);
     }
-
-    //webview
-    WebView web;
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(1);
-        web = new WebView(this);
-        WebSettings webSet = web.getSettings();
-        webSet.setUseWideViewPort(true);
-        webSet.setJavaScriptEnabled(true);
-        webSet.setJavaScriptCanOpenWindowsAutomatically(true);
-        webSet.setBuiltInZoomControls(false);
-        webSet.setAllowFileAccessFromFileURLs(true);
-        webSet.setAllowUniversalAccessFromFileURLs(true);
-        webSet.setSupportMultipleWindows(true);
-        webSet.setSaveFormData(false);
-        webSet.setSavePassword(false);
-        webSet.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        web.setWebChromeClient(new WebChromeClient());
-        web.setWebViewClient(new WebViewClient());
-        web.loadUrl("https://qrtest.enakee.com/");
-        layout.addView(web);
-        setContentView(layout);
-    }
-    public void onBackPressed() {
-        if(web.canGoBack()) web.goBack();
-        else finish();
-    }
 }
+
+
+//////
